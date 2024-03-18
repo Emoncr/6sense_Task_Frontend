@@ -1,6 +1,7 @@
 import { Trash, FilePenLine, ReceiptText } from 'lucide-react';
 import Link from 'next/link';
 import UserStatus from './UserStatus';
+import DeleteAction from './DeleteAction';
 
 
 
@@ -21,11 +22,7 @@ const User = ({ userInfo }) => {
                 <UserStatus userInfo={userInfo} />
 
 
-                <Link
-                    href={`/${userInfo._id}`}
-                    className="btn text-red-600">
-                    <Trash />
-                </Link>
+                <DeleteAction userInfo={userInfo} />
                 <Link href={`/${userInfo._id}`} className='btn text-gray-900'>
                     <FilePenLine />
                 </Link>

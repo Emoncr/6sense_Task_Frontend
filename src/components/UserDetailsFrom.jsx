@@ -1,6 +1,7 @@
 "use client"
 
 import axios from "axios";
+import { useRouter } from "next/navigation";
 import { useState } from "react"
 import toast, { Toaster } from "react-hot-toast";
 
@@ -8,6 +9,10 @@ const UserDetailsFrom = ({ userData }) => {
     const [data, setData] = useState(userData);
     const [changeData, setChangeData] = useState({})
     const [loading, setLoading] = useState(false)
+
+
+    const router = useRouter();
+
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -28,7 +33,7 @@ const UserDetailsFrom = ({ userData }) => {
             toast.success("User update Success")
 
             setData(response.data.updatedUser)
-
+            router.refresh()
         } catch (error) {
             setLoading(false)
             toast.error("Update Failed!")
@@ -37,7 +42,6 @@ const UserDetailsFrom = ({ userData }) => {
 
 
     return (
-
         <div className="list_items mt-8 grid gap-3">
             <form onSubmit={(e) => handleSubmit(e)}>
                 <div className='grid grid-cols-2 gap-10'>

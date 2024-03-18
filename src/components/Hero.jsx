@@ -4,7 +4,7 @@ import axios from "axios";
 import Link from "next/link";
 
 const getData = async () => {
-  const users = await axios.get(process.env.Base_Url + "/api/users", { cache: "no-store" });
+  const users = await axios.get(process.env.Base_Url + "/api/users", { cache: "no-cache" });
 
   return users.data.result;
 }

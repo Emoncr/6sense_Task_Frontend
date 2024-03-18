@@ -10,7 +10,7 @@
   text-decoration: none;
 }
 .container {
-  @apply max-w-7xl mx-auto;
+  @apply max-w-7xl mx-auto px-5;
 }
 .btn {
   @apply font-inter font-normal text-base w-11 h-11 rounded-full border-2 border-transparent border-solid focus:border-gray-300 cursor-pointer flex items-center justify-center bg-transparent hover:bg-gray-200 transition-all;

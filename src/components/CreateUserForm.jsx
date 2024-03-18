@@ -2,9 +2,6 @@
 
 import axios from "axios";
 import { UserPlus } from "lucide-react";
-import { useRouter } from "next/navigation";
-
-
 import { useState } from "react"
 import toast, { Toaster } from "react-hot-toast";
 
@@ -14,32 +11,30 @@ const CreateUserForm = () => {
 
     const [data, setData] = useState({});
 
-    const [loading, setLoading] = useState(false)
+    const [loading, setLoading] = useState(false);
 
 
-    const router = useRouter();
 
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        if (!data.firstName) return toast.error("First name is empty")
-        if (!data.lastName) return toast.error("Last name is empty")
-        if (!data.email) return toast.error("Email is empty")
-        if (!data.phone) return toast.error("Phone is empty")
+        if (!data.firstName) return toast.error("First name is empty");
+        if (!data.lastName) return toast.error("Last name is empty");
+        if (!data.email) return toast.error("Email is empty");
+        if (!data.phone) return toast.error("Phone is empty");
         try {
-            setLoading(true)
-            const response = await axios.post(`https://sixsense-task-backend.onrender.com/api/user/create`, data)
+            setLoading(true);
+            const response = await axios.post(`https://sixsense-task-backend.onrender.com/api/user/create`, data);
 
-            setLoading(false)
+            setLoading(false);
 
-            if (!response.data.success) return toast.error("Update Failed")
-            toast.success("User Added Successfull")
+            if (!response.data.success) return toast.error("Update Failed");
+            toast.success("User Added Successfull");
 
-            router.push("/")
-
+            setData({});
         } catch (error) {
-            setLoading(false)
-            toast.error("User Added Failed!")
+            setLoading(false);
+            toast.error("User Added Failed!");
         }
     }
 
@@ -54,7 +49,7 @@ const CreateUserForm = () => {
                             <p>First Name</p>
                             <input
                                 onChange={(e) => setData({ ...data, firstName: e.target.value })}
-                                defaultValue={data?.firstName && data.firstName}
+                                value={data?.firstName ? data.firstName : ""}
                                 type="text"
                             />
                         </label>
@@ -64,7 +59,7 @@ const CreateUserForm = () => {
                             <p>Last Name</p>
                             <input
                                 onChange={(e) => setData({ ...data, lastName: e.target.value })}
-                                defaultValue={data?.lastName && data.lastName}
+                                value={data?.lastName ? data.lastName : ""}
                                 type="text"
                             />
                         </label>
@@ -76,7 +71,7 @@ const CreateUserForm = () => {
                             <p>Email Address</p>
                             <input
                                 onChange={(e) => setData({ ...data, email: e.target.value })}
-                                defaultValue={data?.email && data.email}
+                                value={data?.email ? data.email : ""}
                                 type="email"
                             />
                         </label>
@@ -86,7 +81,7 @@ const CreateUserForm = () => {
                             <p>Phone Number</p>
                             <input
                                 onChange={(e) => setData({ ...data, phone: e.target.value })}
-                                defaultValue={data?.phone && data.phone}
+                                value={data?.phone ? data.phone : ""}
                                 name='phone'
                                 type="text"
                             />

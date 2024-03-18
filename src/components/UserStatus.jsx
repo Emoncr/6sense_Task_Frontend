@@ -13,24 +13,21 @@ const UserStatus = ({ userInfo }) => {
 
     const handleStatusClick = async (currentStatus) => {
         const statusObject = { status: currentStatus === "active" ? "blocked" : "active" }
-        console.log(statusObject);
+   
         try {
             setLoading(true)
             const response = await axios.patch(`https://sixsense-task-backend.onrender.com/api/user/status/update/${userInfo._id}`, statusObject)
-            console.log(response.data);
 
             if (!response.data.success) return toast.error("Status Updated Failed!")
             toast.success("Status Updated")
             router.refresh()
 
             setLoading(false)
-            
+
         } catch (error) {
-            console.log(error);
             setLoading(false)
             toast.error("Status Updated Failed!")
         }
-
     }
 
 
