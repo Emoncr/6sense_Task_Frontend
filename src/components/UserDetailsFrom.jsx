@@ -6,29 +6,35 @@ import toast, { Toaster } from "react-hot-toast";
 
 const UserDetailsFrom = ({ userData }) => {
     const [data, setData] = useState(userData);
-
-
+    const [changeData, setChangeData] = useState({})
+    const [loading, setLoading] = useState(false)
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        if (changeData.email) return toast.error("You can't update email feild")
         if (
-            data.firstName === userData.firstName &&
-            data.lastName === userData.lastName &&
-            data.phone === userData.phone
+            changeData.firstName === userData.firstName &&
+            changeData.lastName === userData.lastName &&
+            changeData.phone === userData.phone
         ) return toast.error("No Chnages happend")
 
         try {
-            const response = await axios.patch(`https://sixsense-task-backend.onrender.com/api/user/update/${userData._id}`, data)
-            console.log(response);
+            setLoading(true)
+            const response = await axios.patch(`https://sixsense-task-backend.onrender.com/api/user/update/${userData._id}`, changeData)
+
+            setLoading(false)
+
             if (!response.data.success) return toast.error("Update Failed")
             toast.success("Update Successfull")
-            setData(response.data)
+
+            setData(response.data.updatedUser)
+
         } catch (error) {
-            console.log(error);
+            setLoading(false)
             toast.error("Update Failed!")
         }
     }
-    console.log(data);
+
 
     return (
 
@@ -39,7 +45,7 @@ const UserDetailsFrom = ({ userData }) => {
                         <label htmlFor="firstName">
                             <p>First Name</p>
                             <input
-                                onChange={(e) => setData({ ...data, firstName: e.target.value })}
+                                onChange={(e) => setChangeData({ ...changeData, firstName: e.target.value })}
                                 defaultValue={data?.firstName && data.firstName}
                                 type="text"
                             />
@@ -49,7 +55,7 @@ const UserDetailsFrom = ({ userData }) => {
                         <label htmlFor="lastName">
                             <p>Last Name</p>
                             <input
-                                onChange={(e) => setData({ ...data, lastName: e.target.value })}
+                                onChange={(e) => setChangeData({ ...changeData, lastName: e.target.value })}
                                 defaultValue={data?.lastName && data.lastName}
                                 type="text"
                             />
@@ -71,7 +77,7 @@ const UserDetailsFrom = ({ userData }) => {
                         <label htmlFor="phone">
                             <p>Phone Number</p>
                             <input
-                                onChange={(e) => setData({ ...data, phone: e.target.value })}
+                                onChange={(e) => setChangeData({ ...changeData, phone: e.target.value })}
                                 defaultValue={data?.phone && data.phone}
                                 name='phone'
                                 type="text"
@@ -80,13 +86,15 @@ const UserDetailsFrom = ({ userData }) => {
                     </div>
                 </div>
                 <div className="mt-5 flex items-center justify-end">
-                    <button type="submit" className="addBtn text-gray-100 bg-green-600 hover:bg-green-700 capitalize">
-                        Save Changes
+                    <button
+                        disabled={loading}
+                        type="submit" className="addBtn text-gray-100 disabled:bg-gray-800 bg-green-600 hover:bg-green-700 capitalize">
+                        {loading ? "Loading..." : "Save Changes"}
                     </button>
                 </div>
             </form>
             <Toaster
-                position="bottom-center"
+                position="top-center"
 
             />
         </div>
