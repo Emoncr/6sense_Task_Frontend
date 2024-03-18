@@ -1,10 +1,11 @@
 import { UserPlus } from "lucide-react";
 import User from "./User";
+import axios from "axios";
 
 const getData = async () => {
-  const res = await fetch(process.env.Base_Url + "/api/users", { cache: "no-store" });
-  const users = await res.json();
-  return users.result;
+  const users = await axios.get(process.env.Base_Url + "/api/users", { cache: "no-store" });
+
+  return users.data.result;
 }
 
 
