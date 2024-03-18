@@ -1,44 +1,43 @@
 "use client"
 
 import axios from "axios";
-import { useRouter } from "next/navigation";
+import { UserPlus } from "lucide-react";
 import { useState } from "react"
 import toast, { Toaster } from "react-hot-toast";
 
-const UserDetailsFrom = ({ userData }) => {
-    const [data, setData] = useState(userData);
-    const [changeData, setChangeData] = useState({})
-    const [loading, setLoading] = useState(false)
 
 
-    const router = useRouter();
+const CreateUserForm = () => {
+
+    const [data, setData] = useState({});
+
+    const [loading, setLoading] = useState(false);
+
+
 
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        if (changeData.email) return toast.error("You can't update email feild")
-        if (
-            changeData.firstName === userData.firstName &&
-            changeData.lastName === userData.lastName &&
-            changeData.phone === userData.phone
-        ) return toast.error("No Chnages happend")
-
+        if (!data.firstName) return toast.error("First name is empty");
+        if (!data.lastName) return toast.error("Last name is empty");
+        if (!data.email) return toast.error("Email is empty");
+        if (!data.phone) return toast.error("Phone is empty");
         try {
-            setLoading(true)
-            const response = await axios.patch(`https://sixsense-task-backend.onrender.com/api/user/update/${userData._id}`, changeData)
+            setLoading(true);
+            const response = await axios.post(`https://sixsense-task-backend.onrender.com/api/user/create`, data);
 
-            setLoading(false)
+            setLoading(false);
 
-            if (!response.data.success) return toast.error("Update Failed")
-            toast.success("User update Success")
+            if (!response.data.success) return toast.error("Update Failed");
+            toast.success("User Added Successfull");
 
-            setData(response.data.updatedUser)
-            router.refresh()
+            setData({});
         } catch (error) {
-            setLoading(false)
-            toast.error("Update Failed!")
+            setLoading(false);
+            toast.error("User Added Failed!");
         }
     }
+
 
 
     return (
@@ -49,8 +48,8 @@ const UserDetailsFrom = ({ userData }) => {
                         <label htmlFor="firstName">
                             <p>First Name</p>
                             <input
-                                onChange={(e) => setChangeData({ ...changeData, firstName: e.target.value })}
-                                defaultValue={data?.firstName && data.firstName}
+                                onChange={(e) => setData({ ...data, firstName: e.target.value })}
+                                value={data?.firstName ? data.firstName : ""}
                                 type="text"
                             />
                         </label>
@@ -59,8 +58,8 @@ const UserDetailsFrom = ({ userData }) => {
                         <label htmlFor="lastName">
                             <p>Last Name</p>
                             <input
-                                onChange={(e) => setChangeData({ ...changeData, lastName: e.target.value })}
-                                defaultValue={data?.lastName && data.lastName}
+                                onChange={(e) => setData({ ...data, lastName: e.target.value })}
+                                value={data?.lastName ? data.lastName : ""}
                                 type="text"
                             />
                         </label>
@@ -71,8 +70,8 @@ const UserDetailsFrom = ({ userData }) => {
                         <label htmlFor="email">
                             <p>Email Address</p>
                             <input
-                                disabled
-                                defaultValue={data?.email && data.email}
+                                onChange={(e) => setData({ ...data, email: e.target.value })}
+                                value={data?.email ? data.email : ""}
                                 type="email"
                             />
                         </label>
@@ -81,8 +80,8 @@ const UserDetailsFrom = ({ userData }) => {
                         <label htmlFor="phone">
                             <p>Phone Number</p>
                             <input
-                                onChange={(e) => setChangeData({ ...changeData, phone: e.target.value })}
-                                defaultValue={data?.phone && data.phone}
+                                onChange={(e) => setData({ ...data, phone: e.target.value })}
+                                value={data?.phone ? data.phone : ""}
                                 name='phone'
                                 type="text"
                             />
@@ -93,7 +92,7 @@ const UserDetailsFrom = ({ userData }) => {
                     <button
                         disabled={loading}
                         type="submit" className="addBtn text-gray-100 disabled:bg-gray-800 bg-green-600 hover:bg-green-700 capitalize">
-                        {loading ? "Loading..." : "Save Changes"}
+                        <UserPlus className="mr-1" /> {loading ? "Loading..." : "Create User"}
                     </button>
                 </div>
             </form>
@@ -105,4 +104,4 @@ const UserDetailsFrom = ({ userData }) => {
     )
 }
 
-export default UserDetailsFrom
+export default CreateUserForm
