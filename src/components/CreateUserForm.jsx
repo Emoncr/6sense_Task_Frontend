@@ -2,6 +2,7 @@
 
 import axios from "axios";
 import { UserPlus } from "lucide-react";
+import { useRouter } from "next/navigation";
 import { useState } from "react"
 import toast, { Toaster } from "react-hot-toast";
 
@@ -12,7 +13,7 @@ const CreateUserForm = () => {
     const [data, setData] = useState({});
 
     const [loading, setLoading] = useState(false);
-
+    const router = useRouter();
 
 
 
@@ -32,6 +33,7 @@ const CreateUserForm = () => {
             toast.success("User Added Successfull");
 
             setData({});
+            router.refresh()
         } catch (error) {
             setLoading(false);
             toast.error("User Added Failed!");
