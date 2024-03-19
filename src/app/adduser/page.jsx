@@ -3,7 +3,7 @@ import { ArrowLeft } from 'lucide-react'
 import Link from 'next/link'
 import React from 'react'
 
-
+export const dynamic = 'force-dynamic'
 const AddUser = () => {
     return (
         <section className='py-10'>
